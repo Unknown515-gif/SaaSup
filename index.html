@@ -193,12 +193,12 @@ const sync=()=>show(location.hash==='#start',false);addEventListener('popstate',
 
 /* ---------- Supabase auth + saving answers ---------- */
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-const SB_URL='https://vzzbuuhqdfqaqcqrhgn.supabase.co',SB_KEY='sb_publishable_dqNz5Ts8GBlON5NrHJ5n6A_mUKdct9o',PK='saasup_pending';
+const SB_URL='https://vzzbuuhqdfqaqcqcrhgn.supabase.co',SB_KEY='sb_publishable_dqNz5Ts8GBlON5NrHJ5n6A_mUKdct9o',PK='saasup_pending';
 const hp=new URLSearchParams(location.hash.slice(1)),hashErr=hp.get('error_description'),fromLink=/access_token=|type=(signup|magiclink|recovery|invite)/.test(location.hash);
 let sb=null;try{sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{flowType:'implicit',persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}})}catch(e){}
 const NOSB='Sign-in service unavailable. Check your connection and reload the page.';
 const redir=()=>/^https?:/.test(location.protocol)?location.origin+'/':undefined;
-const emsg=m=>/invalid login/i.test(m)?'Wrong email or password.':/not confirmed/i.test(m)?'Please confirm your email first: check your inbox.':/rate limit|too many|seconds/i.test(m)?'Too many attempts. Please wait a minute and try again.':m;
+const emsg=m=>/failed to fetch|networkerror|load failed/i.test(m)?'Can’t reach the sign-in service. Check your connection and try again.':/invalid login/i.test(m)?'Wrong email or password.':/not confirmed/i.test(m)?'Please confirm your email first: check your inbox.':/rate limit|too many|seconds/i.test(m)?'Too many attempts. Please wait a minute and try again.':m;
 function toStep(n,push){show(true,!!push);i=S.findIndex(x=>x.t===n);R(1)}
 function payload(){const lab={};S.forEach(s=>{if(s.t==='q'&&A[s.k]!==undefined)lab[s.k]=s.k==='dream'&&A.dream===5?(A.own||'').trim():[].concat(s.o[A[s.k]])[0]});
 if(A.per!==undefined)lab.personality=['Not at all','Rather not','I don’t know','Rather yes','Completely'][A.per];const raw=Object.assign({},A,{goal:g()});delete raw.email;return{raw:raw,labels:lab}}
